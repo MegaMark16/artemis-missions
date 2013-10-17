@@ -1,0 +1,154 @@
+﻿<!-- mission_data is the big wrapper for all the parts of a mission -->
+<mission_data version="1.60">
+
+  <!-- ******************************************************************************************** -->
+  <!-- all the things that exist at the start of the mission -->
+  <start>
+    <create type ="player" x="90500" y="0" z="38000" name="Artemis"/>
+
+    <!-- Friendly ships and stations -->
+    <create type ="station" raceKeys="friendly" hullKeys="base" x="60000" y="0" z="15000" name="Warwick"/>
+    <create type ="station" raceKeys="friendly" hullKeys="base" x="90000" y="0" z="33000" name="Newhaven"/>
+    <create type ="neutral" raceKeys="friendly" hullKeys="luxury" x="25000" y="0" z="80000" name="The Britannia" angle="270" />
+    <set_object_property name="The Britannia" property="willAcceptCommsOrders" value="0" />
+    <clear_ai name="The Britannia"/>
+    <add_ai name="The Britannia" type="DIR_THROTTLE" value1="270" value2="10" />
+
+    <!-- Obstacles and stuff -->
+    <!--create type ="nebulas" count="20" startX="20000" startY="0" startZ="80000" radius ="6000" startAngle="0" endAngle="360" randomRange="4000" randomSeed="4"/-->
+    <!--create type ="nebulas" count="30" startX="50000" startY="0" startZ="70000" radius ="50000" startAngle="0" endAngle="70" randomRange="4000" randomSeed="5"/-->
+
+    <create type ="asteroids" count="30" startX="30000" startY="0" startZ="30000" radius="10000" startAngle="0" endAngle="90" randomRange="2000" randomSeed="6"/>
+
+    <create type ="mines" count="40" startX="30000" startY="400" startZ="1000" endX="75000" endY="400" endZ="40000" randomRange="1000" randomSeed="6" />
+    <create type ="mines" count="40" startX="30000" startY="0" startZ="1000" endX="75000" endY="0" endZ="40000" randomRange="1000" randomSeed="2" />
+    <create type ="mines" count="40" startX="30000" startY="-400" startZ="1000" endX="75000" endY="-400" endZ="40000" randomRange="1000" randomSeed="8" />
+
+    <create type ="mines" count="50" startX="30000" startY="400" startZ="30000" endX="95000" endY="400" endZ="98000" randomRange="1000" randomSeed="6" />
+    <create type ="mines" count="50" startX="30000" startY="0" startZ="30000" endX="95000" endY="0" endZ="98000" randomRange="1000" randomSeed="2" />
+    <create type ="mines" count="50" startX="30000" startY="-400" startZ="30000" endX="95000" endY="-400" endZ="98000" randomRange="1000" randomSeed="8" />
+
+    <create type ="mines" count="30" startX="1000" startY="400" startZ="35000" endX="50000" endY="400" endZ="75000" randomRange="1000" randomSeed="6" />
+    <create type ="mines" count="30" startX="1000" startY="0" startZ="35000" endX="50000" endY="0" endZ="75000" randomRange="1000" randomSeed="2" />
+    <create type ="mines" count="30" startX="1000" startY="-400" startZ="35000" endX="50000" endY="-400" endZ="75000" randomRange="1000" randomSeed="8" />
+    <!--
+    -->
+
+    <big_message title="SAVE THE QUEEN" subtitle1="written by Mark Ransom"/>
+
+    <set_timer name="admiral_comm_timer" seconds="5"/>
+
+    <log text="Starting\n\n"/>
+
+  </start>
+
+  <event>
+    <if_variable name="first_admiral_comm" comparator="!=" value="1"/>
+    <if_timer_finished name="admiral_comm_timer"/>
+
+    <incoming_message from="Admiral  Molotov" mediaType="0" fileName="Molotov1.ogg"/>
+
+    <incoming_comms_text from="Admiral Molotov">
+        Hello, Captain.  We have just received word that Queen Illiana is fleeing
+        the evil Kralien warlord Uzuzu, who is attempting to kidnap her and hold
+        her for ransom.  We cannot allow her to be taken.  Your orders are to fly
+        to her aid, and if she is captured you must track her down and rescue her
+        from Uzuzu's evil clutches.
+    </incoming_comms_text>
+
+    <set_variable name="first_admiral_comm" value="1"/>
+    <set_timer name="admiral_comm_timer" seconds="60"/>
+    <set_timer name="wave_of_enemy_ships_timer1" seconds="20"/>
+
+  </event>
+
+  <!-- Britannia navigational events -->
+  <event>
+
+    <if_inside_sphere name="The Britannia" centerX="65000" centerY="0" centerZ="80000" radius="10000" />
+    <if_variable name="britannia_turn_1_complete" comparator="!=" value="1"/>
+
+    <clear_ai name="The Britannia"/>
+    <add_ai name="The Britannia" type="DIR_THROTTLE" value1="35" value2="10" />
+
+    <set_variable name="britannia_turn_1_complete" value="1"/>
+
+  </event>
+  <event>
+
+    <if_inside_sphere name="The Britannia" centerX="23000" centerY="0" centerZ="23000" radius="10000" />
+    <if_variable name="britannia_turn_2_complete" comparator="!=" value="1"/>
+
+    <clear_ai name="The Britannia"/>
+    <add_ai name="The Britannia" type="DIR_THROTTLE" value1="240" value2="10" />
+
+    <set_variable name="britannia_turn_2_complete" value="1"/>
+
+  </event>
+
+  <!-- Enemy ship events -->
+  <event>
+    <if_timer_finished name="wave_of_enemy_ships_timer1"/>
+    <if_variable name="wave_of_enemy_ships_1_complete" comparator="!=" value="1"/>
+
+    <!--
+    <create type="enemy" raceKeys="Skaraan enemy elite" hullKeys="small" x="11000" y="0" z="80000" angle="300" name="Skar01" />
+    <set_object_property name="Skar01" property="eliteAIType" value="1"/>
+    <set_object_property name="Skar01" property="eliteAbilityBits" value="4"/>
+    <add_ai name="Skar01" type="TARGET_THROTTLE" targetName="The Britannia" value1="100" />
+    -->
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="13000" y="0" z="90000" angle="300" name="KR1" fleetnumber="1"/>
+    <clear_ai name="KR1"/>
+    <add_ai name="KR1" type="TARGET_THROTTLE" targetName="The Britannia" value1="6" />
+    <add_ai name="KR1" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="KR1" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="13300" y="0" z="92000" angle="300" name="KR2" fleetnumber="1"/>
+    <clear_ai name="KR2"/>
+    <add_ai name="KR2" type="TARGET_THROTTLE" targetName="The Britannia" value1="6" />
+    <add_ai name="KR2" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="KR2" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="13600" y="0" z="94000" angle="300" name="KR3" fleetnumber="1"/>
+    <clear_ai name="KR3"/>
+    <add_ai name="KR3" type="TARGET_THROTTLE" targetName="The Britannia" value1="6" />
+    <add_ai name="KR3" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="KR3" type="CHASE_NEUTRAL" value1="10000" />
+
+    <set_timer name="wave_of_enemy_ships_timer2" seconds="60"/>
+    <set_variable name="wave_of_enemy_ships_1_complete" value="1"/>
+  </event>
+
+  <event>
+    <if_variable name="britannia_turn_1_complete" comparator="=" value="1"/>
+    <if_variable name="wave_of_enemy_ships_2_complete" comparator="!=" value="1"/>
+
+    <!--
+    <create type="enemy" raceKeys="Skaraan enemy elite" hullKeys="small" x="11000" y="0" z="80000" angle="300" name="Skar01" />
+    <set_object_property name="Skar01" property="eliteAIType" value="1"/>
+    <set_object_property name="Skar01" property="eliteAbilityBits" value="4"/>
+    <add_ai name="Skar01" type="TARGET_THROTTLE" targetName="The Britannia" value1="100" />
+    -->
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="70000" y="0" z="90000" angle="30" name="KR4" fleetnumber="2"/>
+    <clear_ai name="KR4"/>
+    <add_ai name="KR4" type="TARGET_THROTTLE" targetName="The Britannia" value1="6" />
+    <add_ai name="KR4" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="KR4" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="70300" y="0" z="92000" angle="30" name="KR5" fleetnumber="2"/>
+    <clear_ai name="KR5"/>
+    <add_ai name="KR5" type="TARGET_THROTTLE" targetName="The Britannia" value1="6" />
+    <add_ai name="KR5" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="KR5" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="70600" y="0" z="94000" angle="30" name="KR6" fleetnumber="2"/>
+    <clear_ai name="KR6"/>
+    <add_ai name="KR6" type="TARGET_THROTTLE" targetName="The Britannia" value1="6" />
+    <add_ai name="KR6" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="KR6" type="CHASE_NEUTRAL" value1="10000" />
+
+    <set_timer name="wave_of_enemy_ships_timer2" seconds="60"/>
+    <set_variable name="wave_of_enemy_ships_2_complete" value="1"/>
+  </event>
+  <!-- ******************************************************************************************** -->
+</mission_data>
