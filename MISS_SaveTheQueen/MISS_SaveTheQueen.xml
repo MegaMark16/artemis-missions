@@ -24,19 +24,29 @@
     <create type ="mines" count="90" startX="30000" startY="0" startZ="500" endX="75000" endY="0" endZ="40000" randomRange="0" randomSeed="2" />
     <create type ="mines" count="90" startX="30000" startY="-400" startZ="500" endX="75000" endY="-400" endZ="40000" randomRange="0" randomSeed="8" />
 
+    <create type ="asteroids" count="90" startX="30000" startY="200" startZ="500" endX="75000" endY="200" endZ="40000" randomRange="200" randomSeed="9" />
+    <create type ="asteroids" count="90" startX="30000" startY="-200" startZ="500" endX="75000" endY="-200" endZ="40000" randomRange="200" randomSeed="3" />
+
     <create type ="mines" count="90" startX="30000" startY="400" startZ="30000" endX="100000" endY="400" endZ="90000" randomRange="0" randomSeed="6" />
     <create type ="mines" count="90" startX="30000" startY="0" startZ="30000" endX="100000" endY="0" endZ="90000" randomRange="0" randomSeed="2" />
     <create type ="mines" count="90" startX="30000" startY="-400" startZ="30000" endX="100000" endY="-400" endZ="90000" randomRange="0" randomSeed="8" />
 
+    <create type ="asteroids" count="90" startX="30000" startY="200" startZ="30000" endX="100000" endY="200" endZ="90000" randomRange="200" randomSeed="9" />
+    <create type ="asteroids" count="90" startX="30000" startY="-200" startZ="30000" endX="100000" endY="-200" endZ="90000" randomRange="200" randomSeed="3" />
+
     <create type ="mines" count="90" startX="1000" startY="400" startZ="35000" endX="50000" endY="400" endZ="75000" randomRange="0" randomSeed="6" />
     <create type ="mines" count="90" startX="1000" startY="0" startZ="35000" endX="50000" endY="0" endZ="75000" randomRange="0" randomSeed="2" />
     <create type ="mines" count="90" startX="1000" startY="-400" startZ="35000" endX="50000" endY="-400" endZ="75000" randomRange="0" randomSeed="8" />
+
+    <create type ="asteroids" count="90" startX="1000" startY="200" startZ="35000" endX="50000" endY="200" endZ="75000" randomRange="200" randomSeed="9" />
+    <create type ="asteroids" count="90" startX="1000" startY="-200" startZ="35000" endX="50000" endY="-200" endZ="75000" randomRange="200" randomSeed="3" />
     <!--
     -->
 
     <big_message title="SAVE THE QUEEN" subtitle1="written by Mark Ransom"/>
 
     <set_timer name="admiral_comm_timer" seconds="5"/>
+    <set_timer name="wave_of_enemy_ships_timer0" seconds="10"/>
 
     <log text="Starting\n\n"/>
 
@@ -140,28 +150,37 @@
     <if_timer_finished name="wave_of_enemy_ships_timer1"/>
     <if_variable name="wave_of_enemy_ships_1_complete" comparator="!=" value="1"/>
 
-    <warning_popup_message message="Enemy ships inbound!" consoles="WHCSE" />
-
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="13000" y="0" z="90000" angle="300" name="WV1A" fleetnumber="1"/>
     <clear_ai name="WV1A"/>
-    <add_ai name="WV1A" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV1A" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV1A" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV1A" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV1A" type="CHASE_NEUTRAL" value1="10000" />
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="13300" y="0" z="92000" angle="300" name="WV1B" fleetnumber="1"/>
     <clear_ai name="WV1B"/>
-    <add_ai name="WV1B" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV1B" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV1B" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV1B" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV1B" type="CHASE_NEUTRAL" value1="10000" />
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="13600" y="0" z="94000" angle="300" name="WV1C" fleetnumber="1"/>
     <clear_ai name="WV1C"/>
-    <add_ai name="WV1C" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV1C" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV1C" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV1C" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV1C" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="anomaly" name="anomaly1C" x="13600" y="0" z="94000" />
+
+    <warning_popup_message message="Enemy ships inbound!" consoles="WHCSE" />
 
     <set_variable name="wave_of_enemy_ships_1_complete" value="1"/>
   </event>
+
+  <!-- An anomoly follows one ship per fleet around so that when the ship gets destroyed the anomly appears to be what's left behind -->
+  <event>
+    <if_exists name="WV1C"/>
+    <set_relative_position name1="WV1C" name2="anomaly1C" distance="1" />
+  </event>
+
   <event>
     <if_timer_finished name="wave_of_enemy_ships_timer1"/>
     <if_variable name="wave_of_enemy_ships_1_difficulty_4_complete" comparator="!=" value="1"/>
@@ -170,10 +189,18 @@
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="13900" y="0" z="96000" angle="300" name="WV1D" fleetnumber="1"/>
     <clear_ai name="WV1D"/>
     <add_ai name="WV1D" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV1D" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV1D" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV1D" type="CHASE_NEUTRAL" value1="10000" />
 
+    <create type="anomaly" name="anomaly1D" x="13600" y="0" z="94000" />
+
     <set_variable name="wave_of_enemy_ships_1_difficulty_4_complete" value="1"/>
+  </event>
+
+  <!-- An anomoly follows one ship per fleet around so that when the ship gets destroyed the anomly appears to be what's left behind -->
+  <event>
+    <if_exists name="WV1D"/>
+    <set_relative_position name1="WV1D" name2="anomaly1D" distance="1" />
   </event>
 
   <!-- Second wave of enemy ships -->
@@ -183,24 +210,35 @@
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="70000" y="0" z="90000" angle="30" name="WV2A" fleetnumber="2"/>
     <clear_ai name="WV2A"/>
-    <add_ai name="WV2A" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV2A" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV2A" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV2A" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV2A" type="CHASE_NEUTRAL" value1="10000" />
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="70300" y="0" z="92000" angle="30" name="WV2B" fleetnumber="2"/>
     <clear_ai name="WV2B"/>
-    <add_ai name="WV2B" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV2B" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV2B" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV2B" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV2B" type="CHASE_NEUTRAL" value1="10000" />
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="70600" y="0" z="94000" angle="30" name="WV2C" fleetnumber="2"/>
     <clear_ai name="WV2C"/>
-    <add_ai name="WV2C" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV2C" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV2C" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV2C" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV2C" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="anomaly" name="anomaly2C" x="13600" y="0" z="94000" />
+
+    <warning_popup_message message="Enemy ships inbound!" consoles="WHCSE" />
 
     <set_variable name="wave_of_enemy_ships_2_complete" value="1"/>
   </event>
+
+  <!-- An anomoly follows one ship per fleet around so that when the ship gets destroyed the anomly appears to be what's left behind -->
+  <event>
+    <if_exists name="WV2C"/>
+    <set_relative_position name1="WV2C" name2="anomaly2C" distance="1" />
+  </event>
+
   <event>
     <if_variable name="britannia_turn_1_complete" comparator="=" value="1"/>
     <if_variable name="wave_of_enemy_ships_2_difficulty_4_complete" comparator="!=" value="1"/>
@@ -208,13 +246,12 @@
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="70600" y="0" z="94000" angle="30" name="WV2D" fleetnumber="2"/>
     <clear_ai name="WV2D"/>
-    <add_ai name="WV2D" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV2D" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV2D" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV2D" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV2D" type="CHASE_NEUTRAL" value1="10000" />
 
     <set_variable name="wave_of_enemy_ships_2_difficulty_4_complete" value="1"/>
   </event>
-
 
   <!-- Third wave of enemy ships -->
   <event>
@@ -223,49 +260,85 @@
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="20600" y="0" z="10000" angle="160" name="WV3A" fleetnumber="2"/>
     <clear_ai name="WV3A"/>
-    <add_ai name="WV3A" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV3A" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV3A" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV3A" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV3A" type="CHASE_NEUTRAL" value1="10000" />
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="20300" y="0" z="12000" angle="160" name="WV3B" fleetnumber="2"/>
     <clear_ai name="WV3B"/>
-    <add_ai name="WV3B" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV3B" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV3B" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV3B" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV3B" type="CHASE_NEUTRAL" value1="10000" />
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="20000" y="0" z="14000" angle="160" name="WV3C" fleetnumber="2"/>
     <clear_ai name="WV3C"/>
-    <add_ai name="WV3C" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV3C" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV3C" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV3C" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV3C" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="anomaly" name="anomaly3C" x="20000" y="0" z="14000" />
+
+    <warning_popup_message message="Enemy ships inbound!" consoles="WHCSE" />
 
     <set_variable name="wave_of_enemy_ships_3_complete" value="1"/>
   </event>
+
+  <!-- An anomoly follows one ship per fleet around so that when the ship gets destroyed the anomly appears to be what's left behind -->
+  <event>
+    <if_exists name="WV3C"/>
+    <set_relative_position name1="WV3C" name2="anomaly3C" distance="1" />
+  </event>
+
+  <event>
+    <if_variable name="britannia_turn_2_complete" comparator="=" value="1"/>
+    <if_variable name="wave_of_enemy_ships_3_difficulty_4_complete" comparator="!=" value="1"/>
+    <if_difficulty comparator="GREATER" value="3"/>
+
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="70600" y="0" z="94000" angle="30" name="WV2D" fleetnumber="2"/>
+    <clear_ai name="WV2D"/>
+    <add_ai name="WV2D" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV2D" type="CHASE_PLAYER" value1="10000" />
+    <add_ai name="WV2D" type="CHASE_NEUTRAL" value1="10000" />
+
+    <set_variable name="wave_of_enemy_ships_3_difficulty_4_complete" value="1"/>
+  </event>
+
 
   <!-- Fourth wave of enemy ships -->
   <event>
     <if_variable name="britannia_turn_3_complete" comparator="=" value="1"/>
     <if_variable name="wave_of_enemy_ships_4_complete" comparator="!=" value="1"/>
 
-    <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="98000" y="0" z="64000" angle="30" name="WV4A" fleetnumber="2"/>
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="98000" y="0" z="54000" angle="20" name="WV4A" fleetnumber="2"/>
     <clear_ai name="WV4A"/>
-    <add_ai name="WV4A" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV4A" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV4A" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV4A" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV4A" type="CHASE_NEUTRAL" value1="10000" />
 
-    <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="97000" y="0" z="62000" angle="30" name="WV4B" fleetnumber="2"/>
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="medium" x="97000" y="0" z="52000" angle="20" name="WV4B" fleetnumber="2"/>
     <clear_ai name="WV4B"/>
-    <add_ai name="WV4B" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV4B" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV4B" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV4B" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV4B" type="CHASE_NEUTRAL" value1="10000" />
 
-    <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="96000" y="0" z="60000" angle="30" name="WV4C" fleetnumber="2"/>
+    <create type="enemy" raceKeys="Kralien enemy" hullKeys="large" x="96000" y="0" z="50000" angle="20" name="WV4C" fleetnumber="2"/>
     <clear_ai name="WV4C"/>
-    <add_ai name="WV4C" type="TARGET_THROTTLE" targetName="Britannia" value1="6" />
-    <add_ai name="WV4C" type="CHASE_PLAYER" value1="20000" />
+    <add_ai name="WV4C" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
+    <add_ai name="WV4C" type="CHASE_PLAYER" value1="10000" />
     <add_ai name="WV4C" type="CHASE_NEUTRAL" value1="10000" />
+
+    <create type="anomaly" name="anomaly4C" x="96000" y="0" z="50000" />
+
+    <warning_popup_message message="Enemy ships inbound!" consoles="WHCSE" />
 
     <set_variable name="wave_of_enemy_ships_4_complete" value="1"/>
   </event>
+
+  <!-- An anomoly follows one ship per fleet around so that when the ship gets destroyed the anomly appears to be what's left behind -->
+  <event>
+    <if_exists name="WV4C"/>
+    <set_relative_position name1="WV4C" name2="anomaly4C" distance="1" />
+  </event>
+
   <!-- ******************************************************************************************** -->
 </mission_data>
