@@ -57,7 +57,6 @@
     <if_timer_finished name="admiral_comm_timer"/>
 
     <incoming_message from="Admiral  Molotov" mediaType="0" fileName="Molotov1.ogg"/>
-
     <incoming_comms_text from="Admiral Molotov">
         Hello, Captain.  We have just received word that Queen Illiana is fleeing
         the evil Kralien warlord Uzuzu, who is attempting to kidnap her and hold
@@ -150,6 +149,12 @@
     <if_timer_finished name="wave_of_enemy_ships_timer1"/>
     <if_variable name="wave_of_enemy_ships_1_complete" comparator="!=" value="1"/>
 
+    <incoming_message from="Warlord Uzuzu" mediaType="0" fileName="Uzuzu1.ogg"/>
+    <incoming_comms_text from="Warlord Uzuzu">
+        You TSN scum!  Soon your precious Queen will be my prisoner, and you will pay dearly
+        if you ever want to see her again.  Prepare for pain!
+    </incoming_comms_text>
+
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="13000" y="0" z="90000" angle="300" name="WV1A" fleetnumber="1"/>
     <clear_ai name="WV1A"/>
     <add_ai name="WV1A" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
@@ -208,6 +213,13 @@
     <if_variable name="britannia_turn_1_complete" comparator="=" value="1"/>
     <if_variable name="wave_of_enemy_ships_2_complete" comparator="!=" value="1"/>
 
+    <incoming_message from="Warlord Uzuzu" mediaType="0" fileName="Uzuzu2.ogg"/>
+    <incoming_comms_text from="Warlord Uzuzu">
+        You cannot escape me, Queen Illiana!  My ships are everywhere, and soon you
+        will be my captive!  There is no escape, and all those who attempt to help
+        you will face my wrath!
+    </incoming_comms_text>
+
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="70000" y="0" z="90000" angle="30" name="WV2A" fleetnumber="2"/>
     <clear_ai name="WV2A"/>
     <add_ai name="WV2A" type="TARGET_THROTTLE" targetName="Britannia" value1="7" />
@@ -257,6 +269,13 @@
   <event>
     <if_variable name="britannia_turn_2_complete" comparator="=" value="1"/>
     <if_variable name="wave_of_enemy_ships_3_complete" comparator="!=" value="1"/>
+
+    <incoming_message from="Warlord Uzuzu" mediaType="0" fileName="Uzuzu3.ogg"/>
+    <incoming_comms_text from="Warlord Uzuzu">
+        You may think you are brave, Queen Illiana, but you are foolish.  You do not
+        want to make me angry, and this game of cat and mouse has gone on long enough.
+        Turn your ship around and surrender, or face my wrath!
+    </incoming_comms_text>
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="20600" y="0" z="10000" angle="160" name="WV3A" fleetnumber="2"/>
     <clear_ai name="WV3A"/>
@@ -308,6 +327,11 @@
   <event>
     <if_variable name="britannia_turn_3_complete" comparator="=" value="1"/>
     <if_variable name="wave_of_enemy_ships_4_complete" comparator="!=" value="1"/>
+
+    <incoming_message from="Warlord Uzuzu" mediaType="0" fileName="Uzuzu2.ogg"/>
+    <incoming_comms_text from="Warlord Uzuzu">
+        YOU WILL NEVER ESCAPE!  PREPARE TO DIE!
+    </incoming_comms_text>
 
     <create type="enemy" raceKeys="Kralien enemy" hullKeys="small" x="98000" y="0" z="54000" angle="20" name="WV4A" fleetnumber="2"/>
     <clear_ai name="WV4A"/>
